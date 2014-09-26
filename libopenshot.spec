@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.0.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -75,6 +75,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Fri Sep 26 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.0.3-3
+- Rebuilt for FFmpeg 2.4.x
+
 * Fri Sep 26 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.0.3-2
 - Rebuilt for FFmpeg 2.4.x
 
