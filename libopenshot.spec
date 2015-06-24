@@ -1,6 +1,8 @@
+%global optflags %(echo %{optflags} -Wl,--as-needed )
+
 Name:           libopenshot
 Version:        0.0.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -50,7 +52,6 @@ applications that use %{name}.
 
 
 %build
-export CXXFLAGS="-Wl,--as-needed"
 %cmake .
 make %{?_smp_mflags}
 
@@ -77,6 +78,10 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Wed Jun 24 2015 Sérgio Basto <sergio@serjux.com> - 0.0.4-2
+- Fixed unused-direct-shlib-dependency in cmake with global optflags,
+  instead use "export CXXFLAGS" that was override all flags .
+
 * Mon May 18 2015 Hans de Goede <j.w.r.degoede@gmail.com> - 0.0.4-1
 - New upstream release 0.0.4
 - Fix FTBFS (rf#3624)
