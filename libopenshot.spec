@@ -1,14 +1,11 @@
-%global optflags %(echo %{optflags} -Wl,--as-needed )
-
 Name:           libopenshot
-Version:        0.0.4
-Release:        2%{?dist}
+Version:        0.0.6
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://launchpad.net/%{name}/0.0/%{version}/+download/%{name}-%{version}.tar.gz
-Patch0:         libopenshot-0.0.4-swig.patch
 
 BuildRequires:  cmake swig
 BuildRequires:  python3-devel
@@ -48,10 +45,10 @@ applications that use %{name}.
 
 %prep
 %setup -q
-%patch0 -p1
 
 
 %build
+export CXXFLAGS="%{optflags} -Wl,--as-needed"
 %cmake .
 make %{?_smp_mflags}
 
@@ -78,6 +75,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Mon Nov 16 2015 Richard Shaw <hobbes1069@gmail.com> - 0.0.6-1
+- Update to latest upstream release.
+
 * Wed Jun 24 2015 Sérgio Basto <sergio@serjux.com> - 0.0.4-2
 - Fixed unused-direct-shlib-dependency in cmake with global optflags,
   instead use "export CXXFLAGS" that was override all flags .
