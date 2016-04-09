@@ -1,17 +1,17 @@
 Name:           libopenshot
-Version:        0.0.6
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
-Source0:        https://launchpad.net/%{name}/0.0/%{version}/+download/%{name}-%{version}.tar.gz
+Source0:        https://launchpad.net/%{name}/0.1/%{version}/+download/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake swig
 BuildRequires:  python3-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
-BuildRequires:  libopenshot-audio-devel >= %{version}
+BuildRequires:  libopenshot-audio-devel >= 0.0.6
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
@@ -44,7 +44,7 @@ applications that use %{name}.
 
 
 %prep
-%setup -q
+%setup -qc
 
 
 %build
@@ -75,6 +75,12 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Fri Apr  8 2016 Richard Shaw <hobbes1069@gmail.com> - 0.1.1-1
+- Update to latest upstream release.
+
+* Tue Feb  9 2016 Richard Shaw <hobbes1069@gmail.com> - 0.1.0-1
+- Update to latest upstream release.
+
 * Mon Nov 16 2015 Richard Shaw <hobbes1069@gmail.com> - 0.0.6-1
 - Update to latest upstream release.
 
