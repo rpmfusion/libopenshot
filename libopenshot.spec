@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -11,7 +11,7 @@ BuildRequires:  cmake swig
 BuildRequires:  python3-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
-BuildRequires:  libopenshot-audio-devel >= 0.0.6
+BuildRequires:  libopenshot-audio-devel >= 0.1.1
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
@@ -33,12 +33,14 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 
-%package -n     python-%{name}
+%package -n     python3-%{name}
 Summary:        Python bindings for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Group:          Development/Libraries
+Obsoletes:      python-%{name} < 0.1.1-2
+Provides:       python-%{name}
 
-%description    -n python-%{name}
+%description -n python3-%{name}
 The python-%{name} package contains python bindings for 
 applications that use %{name}.
 
@@ -70,11 +72,14 @@ make %{?_smp_mflags}
 %{_includedir}/%{name}/
 %{_libdir}/*.so
 
-%files -n python-libopenshot
+%files -n python3-libopenshot
 %{python3_sitearch}/*
 
 
 %changelog
+* Mon Apr 18 2016 Richard Shaw <hobbes1069@gmail.com> - 0.1.1-2
+- Rename python-libopenshot to python3-libopenshot.
+
 * Fri Apr  8 2016 Richard Shaw <hobbes1069@gmail.com> - 0.1.1-1
 - Update to latest upstream release.
 
