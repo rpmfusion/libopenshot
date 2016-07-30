@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -77,6 +77,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Sat Jul 30 2016 Julian Sikorski <belegdol@fedoraproject.org> - 0.1.1-3
+- Rebuilt for ffmpeg-3.1.1
+
 * Mon Apr 18 2016 Richard Shaw <hobbes1069@gmail.com> - 0.1.1-2
 - Rename python-libopenshot to python3-libopenshot.
 
