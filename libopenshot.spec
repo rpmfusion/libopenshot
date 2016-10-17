@@ -1,6 +1,6 @@
 Name:           libopenshot
-Version:        0.1.1
-Release:        3%{?dist}
+Version:        0.1.2
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -15,6 +15,7 @@ BuildRequires:  libopenshot-audio-devel >= 0.1.1
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
+BuildRequires:  zeromq-devel cppzmq-devel
 
 
 %description
@@ -77,6 +78,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Mon Oct 17 2016 Richard Shaw <hobbes1069@gmail.com> - 0.1.2-1
+- Update to latest upstream release.
+
 * Sat Jul 30 2016 Julian Sikorski <belegdol@fedoraproject.org> - 0.1.1-3
 - Rebuilt for ffmpeg-3.1.1
 
