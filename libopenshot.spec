@@ -1,5 +1,5 @@
 Name:           libopenshot
-Version:        0.1.2
+Version:        0.1.3
 Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
@@ -78,6 +78,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Tue Mar 14 2017 Richard Shaw <hobbes1069@gmail.com> - 0.1.3-1
+- Update to latest upstream release.
+
 * Mon Oct 17 2016 Richard Shaw <hobbes1069@gmail.com> - 0.1.2-1
 - Update to latest upstream release.
 
