@@ -1,6 +1,6 @@
 Name:           libopenshot
-Version:        0.1.3
-Release:        2%{?dist}
+Version:        0.1.4
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -78,6 +78,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Thu Apr 06 2017 Sérgio Basto <sergio@serjux.com> - 0.1.4-1
+- Update to 0.1.4
+
 * Sun Mar 19 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 0.1.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
