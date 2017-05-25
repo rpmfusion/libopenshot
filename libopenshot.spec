@@ -1,11 +1,11 @@
 Name:           libopenshot
-Version:        0.1.4
-Release:        2%{?dist}
+Version:        0.1.6
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
-Source0:        https://launchpad.net/%{name}/0.1/%{version}/+download/%{name}-%{version}.tar.gz
+Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake swig
 BuildRequires:  python3-devel
@@ -47,7 +47,7 @@ applications that use %{name}.
 
 
 %prep
-%setup -qc
+%autosetup
 
 
 %build
@@ -78,6 +78,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Fri May 19 2017 Richard Shaw <hobbes1069@gmail.com> - 0.1.6-1
+- Update to latest upstream release.
+
 * Sat Apr 29 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.1.4-2
 - Rebuild for ffmpeg update
 
