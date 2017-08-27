@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -78,6 +78,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Sun Aug 27 2017 Nicolas Chauvet <kwizart@gmail.com> - 0.1.6-2
+- Rebuilt for ImageMagick
+
 * Fri May 19 2017 Richard Shaw <hobbes1069@gmail.com> - 0.1.6-1
 - Update to latest upstream release.
 
