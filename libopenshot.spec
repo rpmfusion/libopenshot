@@ -1,6 +1,6 @@
 Name:           libopenshot
-Version:        0.1.6
-Release:        2%{?dist}
+Version:        0.1.7
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -11,7 +11,7 @@ BuildRequires:  cmake swig
 BuildRequires:  python3-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
-BuildRequires:  libopenshot-audio-devel >= 0.1.1
+BuildRequires:  libopenshot-audio-devel >= 0.1.4
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
@@ -51,7 +51,7 @@ applications that use %{name}.
 
 
 %build
-export CXXFLAGS="%{optflags} -Wl,--as-needed"
+export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 %cmake .
 make %{?_smp_mflags}
 
@@ -78,6 +78,11 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Sat Sep 02 2017 Sérgio Basto <sergio@serjux.com> - 0.1.7-1
+- Update libopenshot to 0.1.7
+- Fix compilation with GCC 7 by adding -Wno-error, reference
+  https://github.com/monocasual/giada/issues/139
+
 * Sun Aug 27 2017 Nicolas Chauvet <kwizart@gmail.com> - 0.1.6-2
 - Rebuilt for ImageMagick
 
