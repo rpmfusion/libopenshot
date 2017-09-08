@@ -1,5 +1,5 @@
 Name:           libopenshot
-Version:        0.1.7
+Version:        0.1.8
 Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
@@ -53,7 +53,7 @@ applications that use %{name}.
 %build
 export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 %cmake .
-make %{?_smp_mflags}
+%make_build
 
 
 %install
@@ -66,7 +66,8 @@ make %{?_smp_mflags}
 
 
 %files
-%doc AUTHORS COPYING README
+%doc AUTHORS README
+%license COPYING
 %{_libdir}/*.so.*
 
 %files devel
@@ -78,6 +79,9 @@ make %{?_smp_mflags}
 
 
 %changelog
+* Thu Sep 07 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.1.8-1
+- Update libopenshot to 0.1.8
+
 * Sat Sep 02 2017 Sérgio Basto <sergio@serjux.com> - 0.1.7-1
 - Update libopenshot to 0.1.7
 - Fix compilation with GCC 7 by adding -Wno-error, reference
