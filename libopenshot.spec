@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -79,6 +79,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Tue Oct 17 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.1.8-2
+- Rebuild for ffmpeg update
+
 * Thu Sep 07 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.1.8-1
 - Update libopenshot to 0.1.8
 
