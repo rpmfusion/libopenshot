@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.8
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -8,7 +8,7 @@ URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  cmake swig
-BuildRequires:  python3-devel
+BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
 BuildRequires:  libopenshot-audio-devel >= 0.1.4
@@ -34,14 +34,14 @@ The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
 
-%package -n     python3-%{name}
+%package -n     python%{python3_pkgversion}-%{name}
 Summary:        Python bindings for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Group:          Development/Libraries
 Obsoletes:      python-%{name} < 0.1.1-2
 Provides:       python-%{name}
 
-%description -n python3-%{name}
+%description -n python%{python3_pkgversion}-%{name}
 The python-%{name} package contains python bindings for 
 applications that use %{name}.
 
@@ -74,11 +74,14 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 %{_includedir}/%{name}/
 %{_libdir}/*.so
 
-%files -n python3-libopenshot
+%files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
 
 
 %changelog
+* Wed Nov 22 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.1.8-3
+- Adjust python for el7
+
 * Tue Oct 17 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.1.8-2
 - Rebuild for ffmpeg update
 
