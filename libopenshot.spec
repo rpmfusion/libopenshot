@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.9
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -79,6 +79,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Sat Jan 13 2018 Richard Shaw <hobbes1069@gmail.com> - 0.1.9-1.1
+- Build against correct libopenshot-audio.
+
 * Sat Jan 13 2018 Richard Shaw <hobbes1069@gmail.com> - 0.1.9-1
 - Update to latest upstream release.
 
