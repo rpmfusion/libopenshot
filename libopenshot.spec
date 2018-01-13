@@ -1,6 +1,6 @@
 Name:           libopenshot
-Version:        0.1.8
-Release:        3%{?dist}
+Version:        0.1.9
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -79,6 +79,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Sat Jan 13 2018 Richard Shaw <hobbes1069@gmail.com> - 0.1.9-1
+- Update to latest upstream release.
+
 * Wed Nov 22 2017 Leigh Scott <leigh123linux@googlemail.com> - 0.1.8-3
 - Adjust python for el7
 
