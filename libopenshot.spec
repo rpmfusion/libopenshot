@@ -1,11 +1,12 @@
 Name:           libopenshot
 Version:        0.1.9
-Release:        1%{?dist}.1
+Release:        2%{?dist}.1
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
+Patch0:         ffmpeg35_buildfix.patch
 
 BuildRequires:  cmake swig
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -47,7 +48,7 @@ applications that use %{name}.
 
 
 %prep
-%autosetup
+%autosetup -p1
 
 
 %build
@@ -79,6 +80,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Wed Jan 17 2018 Leigh Scott <leigh123linux@googlemail.com> - 0.1.9-2.1
+- Rebuilt for ffmpeg-3.5 git
+
 * Sat Jan 13 2018 Richard Shaw <hobbes1069@gmail.com> - 0.1.9-1.1
 - Build against correct libopenshot-audio.
 
