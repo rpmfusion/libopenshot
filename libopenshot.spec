@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.9
-Release:        2%{?dist}.1
+Release:        3%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -12,7 +12,7 @@ BuildRequires:  cmake swig
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
-BuildRequires:  libopenshot-audio-devel >= 0.1.4
+BuildRequires:  libopenshot-audio-devel >= 0.1.5
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
@@ -80,6 +80,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Sat Feb 17 2018 Sérgio Basto <sergio@serjux.com> - 0.1.9-3
+- require libopenshot-audio 0.1.5
+
 * Wed Jan 17 2018 Leigh Scott <leigh123linux@googlemail.com> - 0.1.9-2.1
 - Rebuilt for ffmpeg-3.5 git
 
