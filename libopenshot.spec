@@ -159,5 +159,6 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 * Fri Sep 26 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.0.3-2
 - Rebuilt for FFmpeg 2.4.x
 
+>>>>>>> master
 * Tue Jul 15 2014 Richard Shaw <hobbes1069@gmail.com> - 0.0.3-1
 - Initial packaging.
