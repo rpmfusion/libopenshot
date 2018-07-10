@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.1.9
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -80,6 +80,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Tue Jul 10 2018 Miro Hrončok <mhroncok@redhat.com> - 0.1.9-6
+- Rebuilt for Python 3.7
+
 * Thu Mar 08 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 0.1.9-5
 - Rebuilt for new ffmpeg snapshot
 
