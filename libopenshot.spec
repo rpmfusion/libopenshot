@@ -1,22 +1,26 @@
 Name:           libopenshot
-Version:        0.1.9
-Release:        7%{?dist}
+Version:        0.2.0
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         ffmpeg35_buildfix.patch
+Patch0:         ffmpeg40_buildfix.patch
 
-BuildRequires:  cmake swig
+BuildRequires:  gcc-c++
+BuildRequires:  cmake
+BuildRequires:  swig
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
-BuildRequires:  libopenshot-audio-devel >= 0.1.5
+BuildRequires:  libopenshot-audio-devel >= 0.1.6
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
-BuildRequires:  zeromq-devel cppzmq-devel
+BuildRequires:  cppzmq-devel
+BuildRequires:  zeromq-devel
+BuildRequires:  ruby-devel
 
 
 %description
@@ -44,6 +48,16 @@ Provides:       python-%{name}
 
 %description -n python%{python3_pkgversion}-%{name}
 The python-%{name} package contains python bindings for 
+applications that use %{name}.
+
+
+%package -n     ruby-%{name}
+Summary:        Ruby bindings for %{name}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Group:          Development/Libraries
+
+%description -n ruby-%{name}
+The ruby-%{name} package contains ruby bindings for
 applications that use %{name}.
 
 
@@ -78,8 +92,14 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 %files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
 
+%files -n ruby-libopenshot
+%{ruby_vendorarchdir}/*
+
 
 %changelog
+* Tue Jul 31 2018 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.0-1
+- New upstream release
+
 * Thu Jul 26 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.1.9-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
