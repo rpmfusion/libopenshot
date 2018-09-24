@@ -1,12 +1,17 @@
 Name:           libopenshot
-Version:        0.2.0
-Release:        2%{?dist}
+Version:        0.2.2
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         ffmpeg40_buildfix.patch
+# Upstreamed
+#Patch0:         ffmpeg40_buildfix.patch
+
+# The cmake environment for tests doesn't match the source build
+# Filed upstream as https://github.com/OpenShot/libopenshot/pull/163
+Patch0:		libopenshot-fix-tests.patch
 
 BuildRequires:  gcc-c++
 BuildRequires:  cmake
@@ -20,6 +25,7 @@ BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
+BuildRequires:  jsoncpp-devel
 BuildRequires:  ruby-devel
 
 
@@ -67,7 +73,7 @@ applications that use %{name}.
 
 %build
 export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
-%cmake .
+%cmake -DUSE_SYSTEM_JSONCPP:BOOL=ON .
 %make_build
 
 
@@ -97,6 +103,11 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Mon Sep 24 2018 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.2-1
+- New upstream release
+- Unbundle jsoncpp
+- Drop ffmpeg patch (upstreamed), add patch to fix tests env
+
 * Wed Aug 29 2018 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.0-2
 - Rebuilt for new ImageMagick 6.9.10.10
 
