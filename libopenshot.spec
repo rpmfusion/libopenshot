@@ -6,8 +6,6 @@ Summary:        Library for creating and editing videos
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-# Upstreamed
-#Patch0:         ffmpeg40_buildfix.patch
 
 # The cmake environment for tests doesn't match the source build
 # Filed upstream as https://github.com/OpenShot/libopenshot/pull/163
