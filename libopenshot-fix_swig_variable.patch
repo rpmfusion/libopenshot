@@ -1,0 +1,22 @@
+--- a/src/bindings/python/CMakeLists.orig.txt	2018-09-22 21:47:46.000000000 +0200
++++ b/src/bindings/python/CMakeLists.txt	2018-11-13 13:09:27.760834443 +0100
+@@ -43,7 +43,7 @@
+ 		SET(CMAKE_SWIG_FLAGS "")
+ 		
+ 		### Add the SWIG interface file (which defines all the SWIG methods)
+-		SWIG_ADD_MODULE(openshot python openshot.i)
++		SWIG_ADD_LIBRARY (openshot LANGUAGE python SOURCES openshot.i TYPE MODULE)
+ 
+ 		### Link the new python wrapper library with libopenshot
+ 		SWIG_LINK_LIBRARIES(openshot ${PYTHON_LIBRARIES} openshot)
+--- a/src/bindings/ruby/CMakeLists.orig.txt	2018-09-22 21:47:46.000000000 +0200
++++ a/src/bindings/ruby/CMakeLists.txt	2018-11-13 13:15:24.840214955 +0100
+@@ -41,7 +41,7 @@
+ 	SET(CMAKE_SWIG_FLAGS "")
+ 
+ 	### Add the SWIG interface file (which defines all the SWIG methods)
+-	SWIG_ADD_MODULE(rbopenshot ruby openshot.i)
++	SWIG_ADD_LIBRARY(rbopenshot LANGUAGE ruby SOURCES openshot.i TYPE MODULE)
+ 	
+ 	### Set name of target (with no prefix, since Ruby does not like that)
+ 	SET_TARGET_PROPERTIES(rbopenshot PROPERTIES PREFIX "" OUTPUT_NAME "openshot")

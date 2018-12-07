@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.2.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -9,12 +9,14 @@ Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-
 
 # The cmake environment for tests doesn't match the source build
 # Filed upstream as https://github.com/OpenShot/libopenshot/pull/163
-Patch0:		libopenshot-fix-tests.patch
+Patch0:		%{name}-fix-tests.patch
+
+# 
+Patch1:         %{name}-fix_swig_variable.patch
 
 BuildRequires:  gcc-c++
-BuildRequires:  cmake
-BuildRequires:  swig
-BuildRequires:  python%{python3_pkgversion}-devel
+%{?el7:BuildRequires: epel-rpm-macros}
+BuildRequires:  cmake3
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
 BuildRequires:  libopenshot-audio-devel >= 0.1.6
@@ -24,7 +26,6 @@ BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
 BuildRequires:  jsoncpp-devel
-BuildRequires:  ruby-devel
 
 
 %description
@@ -45,8 +46,9 @@ developing applications that use %{name}.
 
 %package -n     python%{python3_pkgversion}-%{name}
 Summary:        Python bindings for %{name}
+BuildRequires:  swig
+BuildRequires:  python%{python3_pkgversion}-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Group:          Development/Libraries
 Obsoletes:      python-%{name} < 0.1.1-2
 Provides:       python-%{name}
 
@@ -57,8 +59,8 @@ applications that use %{name}.
 
 %package -n     ruby-%{name}
 Summary:        Ruby bindings for %{name}
+BuildRequires:  ruby-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Group:          Development/Libraries
 
 %description -n ruby-%{name}
 The ruby-%{name} package contains ruby bindings for
@@ -68,10 +70,12 @@ applications that use %{name}.
 %prep
 %autosetup -p1
 
+sed -e 's|-g -ggdb|-g|g' -i src/CMakeLists.txt tests/CMakeLists.txt
+sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|g' -i CMakeLists.txt
 
 %build
-export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
-%cmake -DUSE_SYSTEM_JSONCPP:BOOL=ON .
+%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release \
+ -DCMAKE_SKIP_RPATH:BOOL=YES -DUSE_SYSTEM_JSONCPP:BOOL=ON .
 %make_build
 
 
@@ -79,9 +83,7 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 %make_install
 
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%ldconfig_scriptlets
 
 
 %files
@@ -101,6 +103,14 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Tue Nov 13 2018 Antonio Trande <sagitter@fedoraproject.org> - 0.2.2-2
+- Rebuild for ffmpeg-3.4.5 on el7
+- Use ldconfig_scriptlets macros
+- Use default compiler flags
+- Use CMake3
+- Patched for using CMake3's Swig variable
+- Remove obsolete Group tags
+
 * Mon Sep 24 2018 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.2-1
 - New upstream release
 - Unbundle jsoncpp
