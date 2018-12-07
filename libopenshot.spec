@@ -1,17 +1,22 @@
 Name:           libopenshot
-Version:        0.2.0
-Release:        1%{?dist}
+Version:        0.2.2
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         ffmpeg40_buildfix.patch
+
+# The cmake environment for tests doesn't match the source build
+# Filed upstream as https://github.com/OpenShot/libopenshot/pull/163
+Patch0:		%{name}-fix-tests.patch
+
+# 
+Patch1:         %{name}-fix_swig_variable.patch
 
 BuildRequires:  gcc-c++
-BuildRequires:  cmake
-BuildRequires:  swig
-BuildRequires:  python%{python3_pkgversion}-devel
+%{?el7:BuildRequires: epel-rpm-macros}
+BuildRequires:  cmake3
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
 BuildRequires:  libopenshot-audio-devel >= 0.1.6
@@ -20,7 +25,7 @@ BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
-BuildRequires:  ruby-devel
+BuildRequires:  jsoncpp-devel
 
 
 %description
@@ -41,8 +46,9 @@ developing applications that use %{name}.
 
 %package -n     python%{python3_pkgversion}-%{name}
 Summary:        Python bindings for %{name}
+BuildRequires:  swig
+BuildRequires:  python%{python3_pkgversion}-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Group:          Development/Libraries
 Obsoletes:      python-%{name} < 0.1.1-2
 Provides:       python-%{name}
 
@@ -53,8 +59,8 @@ applications that use %{name}.
 
 %package -n     ruby-%{name}
 Summary:        Ruby bindings for %{name}
+BuildRequires:  ruby-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Group:          Development/Libraries
 
 %description -n ruby-%{name}
 The ruby-%{name} package contains ruby bindings for
@@ -64,10 +70,12 @@ applications that use %{name}.
 %prep
 %autosetup -p1
 
+sed -e 's|-g -ggdb|-g|g' -i src/CMakeLists.txt tests/CMakeLists.txt
+sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|g' -i CMakeLists.txt
 
 %build
-export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
-%cmake .
+%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release \
+ -DCMAKE_SKIP_RPATH:BOOL=YES -DUSE_SYSTEM_JSONCPP:BOOL=ON .
 %make_build
 
 
@@ -75,9 +83,7 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 %make_install
 
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%ldconfig_scriptlets
 
 
 %files
@@ -97,8 +103,36 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed -Wno-error"
 
 
 %changelog
+* Tue Nov 13 2018 Antonio Trande <sagitter@fedoraproject.org> - 0.2.2-2
+- Rebuild for ffmpeg-3.4.5 on el7
+- Use ldconfig_scriptlets macros
+- Use default compiler flags
+- Use CMake3
+- Patched for using CMake3's Swig variable
+- Remove obsolete Group tags
+
+* Mon Sep 24 2018 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.2-1
+- New upstream release
+- Unbundle jsoncpp
+- Drop ffmpeg patch (upstreamed), add patch to fix tests env
+
+* Wed Aug 29 2018 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.0-2
+- Rebuilt for new ImageMagick 6.9.10.10
+
 * Tue Jul 31 2018 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.0-1
 - New upstream release
+
+* Thu Jul 26 2018 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.1.9-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Tue Jul 10 2018 Miro Hrončok <mhroncok@redhat.com> - 0.1.9-6
+- Rebuilt for Python 3.7
+
+* Thu Mar 08 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 0.1.9-5
+- Rebuilt for new ffmpeg snapshot
+
+* Thu Mar 01 2018 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 0.1.9-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
 * Sat Feb 17 2018 Sérgio Basto <sergio@serjux.com> - 0.1.9-3
 - require libopenshot-audio 0.1.5
