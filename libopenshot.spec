@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.2.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -103,6 +103,9 @@ sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|
 
 
 %changelog
+* Mon Mar 04 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Tue Nov 13 2018 Antonio Trande <sagitter@fedoraproject.org> - 0.2.2-2
 - Rebuild for ffmpeg-3.4.5 on el7
 - Use ldconfig_scriptlets macros
