@@ -216,6 +216,5 @@ sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|
 * Fri Sep 26 2014 Nicolas Chauvet <kwizart@gmail.com> - 0.0.3-2
 - Rebuilt for FFmpeg 2.4.x
 
->>>>>>> master
 * Tue Jul 15 2014 Richard Shaw <hobbes1069@gmail.com> - 0.0.3-1
 - Initial packaging.
