@@ -1,15 +1,11 @@
 Name:           libopenshot
-Version:        0.2.2
-Release:        3%{?dist}
+Version:        0.2.3
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-
-# The cmake environment for tests doesn't match the source build
-# Filed upstream as https://github.com/OpenShot/libopenshot/pull/163
-Patch0:		%{name}-fix-tests.patch
 
 # 
 Patch1:         %{name}-fix_swig_variable.patch
@@ -19,7 +15,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  cmake3
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
-BuildRequires:  libopenshot-audio-devel >= 0.1.6
+BuildRequires:  libopenshot-audio-devel >= 0.1.8
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
@@ -87,7 +83,7 @@ sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|
 
 
 %files
-%doc AUTHORS README
+%doc AUTHORS README.md
 %license COPYING
 %{_libdir}/*.so.*
 
@@ -103,6 +99,10 @@ sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|
 
 
 %changelog
+* Fri Mar 22 2019 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.3-1
+- New upstream release
+- Drop upstreamed patches
+
 * Mon Mar 04 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.2-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
