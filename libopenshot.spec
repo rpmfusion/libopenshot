@@ -1,21 +1,24 @@
+%global gitrev 101f25a7f5a1623cca2b2514fa2f7aed93799324
+%global shortrev %(c=%{gitrev}; echo ${c:0:7})
+%global gitdate 20190406
+
 Name:           libopenshot
 Version:        0.2.3
-Release:        1%{?dist}
+Release:        2.%{gitdate}git%{shortrev}%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
-Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/OpenShot/%{name}/archive/%{gitrev}.tar.gz#/%{name}-%{shortrev}.tar.gz
 
-# 
-Patch1:         %{name}-fix_swig_variable.patch
+# Fixed upstream 
+#Patch1:         %{name}-fix_swig_variable.patch
 
 BuildRequires:  gcc-c++
 %{?el7:BuildRequires: epel-rpm-macros}
 BuildRequires:  cmake3
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
-BuildRequires:  libopenshot-audio-devel >= 0.1.8
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
@@ -23,6 +26,13 @@ BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
 BuildRequires:  jsoncpp-devel
 
+# Dependency on libopenshot-audio 0.1.8 is insufficient, this libopenshot
+# code can only be built and run with a libopenshot-audio release containing
+# the new JUCE 5 APIs, which were introduced in the specific package releases
+# indicated. This restriction will be eliminated with the next official
+# releases of libopenshot and libopenshot-audio.
+BuildRequires:  libopenshot-audio-devel >= 0:0.1.8-2
+Requires:       libopenshot-audio%{?isa} >= 0:0.1.8-2
 
 %description
 OpenShot Library (libopenshot) is an open-source project
@@ -64,12 +74,12 @@ applications that use %{name}.
 
 
 %prep
-%autosetup -p1
+%autosetup -p1 -n %{name}-%{gitrev}
 
 sed -e 's|-g -ggdb|-g|g' -i src/CMakeLists.txt tests/CMakeLists.txt
-sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|g' -i CMakeLists.txt
 
 %build
+export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release \
  -DCMAKE_SKIP_RPATH:BOOL=YES -DUSE_SYSTEM_JSONCPP:BOOL=ON .
 %make_build
@@ -99,6 +109,11 @@ sed -e 's|-std=c++11|%{optflags} -std=c++11 %{__global_ldflags} -Wl,--as-needed|
 
 
 %changelog
+* Tue Apr 09 2019 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.3-2
+- Upgrade to latest git revision, to fix FTBFS with GCC9 on Fedora 30
+- Requires libopenshot-audio also built from same or later gitrev
+- Drop upstreamed patches
+
 * Fri Mar 22 2019 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.3-1
 - New upstream release
 - Drop upstreamed patches
