@@ -4,7 +4,7 @@
 
 Name:           libopenshot
 Version:        0.2.3
-Release:        2.%{gitdate}git%{shortrev}%{?dist}
+Release:        3.%{gitdate}git%{shortrev}%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -33,6 +33,9 @@ BuildRequires:  jsoncpp-devel
 # releases of libopenshot and libopenshot-audio.
 BuildRequires:  libopenshot-audio-devel >= 0:0.1.8-2
 Requires:       libopenshot-audio%{?isa} >= 0:0.1.8-2
+
+# EL7 has other packages providing libzmq.so.5
+Requires:	zeromq%{?isa} >= 0:4.1.4
 
 %description
 OpenShot Library (libopenshot) is an open-source project
@@ -109,6 +112,10 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 
 
 %changelog
+* Sun Jun 23 2019 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.3-3
+- Add explicit Requires: zeromq, to work around other EL7
+  packages which provide the required libzmq.so.5
+
 * Tue Apr 09 2019 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.3-2
 - Upgrade to latest git revision, to fix FTBFS with GCC9 on Fedora 30
 - Requires libopenshot-audio also built from same or later gitrev
