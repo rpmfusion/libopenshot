@@ -4,7 +4,7 @@
 
 Name:           libopenshot
 Version:        0.2.3
-Release:        2.%{gitdate}git%{shortrev}%{?dist}
+Release:        3.%{gitdate}git%{shortrev}%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -109,6 +109,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 
 
 %changelog
+* Wed Aug 07 2019 Leigh Scott <leigh123linux@gmail.com> - 0.2.3-3.20190406git101f25a
+- Rebuild for new ffmpeg version
+
 * Tue Apr 09 2019 FeRD (Frank Dana) <ferdnyc AT gmail com> - 0.2.3-2
 - Upgrade to latest git revision, to fix FTBFS with GCC9 on Fedora 30
 - Requires libopenshot-audio also built from same or later gitrev
