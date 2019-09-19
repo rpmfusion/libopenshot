@@ -1,18 +1,19 @@
-%global gitrev 101f25a7f5a1623cca2b2514fa2f7aed93799324
+%global gitrev c685571e6388ad5cc6c40661fd51bd15b436ccac
 %global shortrev %(c=%{gitrev}; echo ${c:0:7})
-%global gitdate 20190406
+%global gitdate 20190912
 
 Name:           libopenshot
 Version:        0.2.3
-Release:        3.%{gitdate}git%{shortrev}%{?dist}
+Release:        4.%{gitdate}git%{shortrev}%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/%{gitrev}.tar.gz#/%{name}-%{shortrev}.tar.gz
 
-# Fixed upstream 
-#Patch1:         %{name}-fix_swig_variable.patch
+# A fix has already been proposed upstream, but not yet accepted
+# https://github.com/OpenShot/libopenshot/pull/290
+Patch1:         %{name}-py-install-path.patch
 
 BuildRequires:  gcc-c++
 %{?el7:BuildRequires: epel-rpm-macros}
@@ -53,6 +54,7 @@ developing applications that use %{name}.
 %package -n     python%{python3_pkgversion}-%{name}
 Summary:        Python bindings for %{name}
 BuildRequires:  swig
+BuildRequires:  python%{python3_pkgversion}-libs
 BuildRequires:  python%{python3_pkgversion}-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Obsoletes:      python-%{name} < 0.1.1-2
@@ -79,11 +81,19 @@ applications that use %{name}.
 sed -e 's|-g -ggdb|-g|g' -i src/CMakeLists.txt tests/CMakeLists.txt
 
 %build
+
+# Package includes an outdated FindPythonLibs.cmake module
+# Reported upstream: https://github.com/OpenShot/libopenshot/pull/331
+rm cmake/Modules/FindPythonLibs.cmake
+
 export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release \
- -DCMAKE_SKIP_RPATH:BOOL=YES -DUSE_SYSTEM_JSONCPP:BOOL=ON .
+ -DUSE_SYSTEM_JSONCPP:BOOL=ON .
 %make_build
 
+
+%check
+make os_test
 
 %install
 %make_install
@@ -109,6 +119,12 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 
 
 %changelog
+* Mon Sep 16 2019 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.3-4
+- Update to git HEAD for compatibility with OpenShot update
+- Enable unit tests
+- Remove CMAKE_SKIP_RPATH to make test binaries runnable from build dir
+- Delete outdated copy of standard CMake module, causes python3.8 failures
+
 * Wed Aug 07 2019 Leigh Scott <leigh123linux@gmail.com> - 0.2.3-3.20190406git101f25a
 - Rebuild for new ffmpeg version
 
