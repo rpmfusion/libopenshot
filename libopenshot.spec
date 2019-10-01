@@ -11,8 +11,6 @@ License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/%{gitrev}.tar.gz#/%{name}-%{shortrev}.tar.gz
 
-ExcludeArch:    ppc64le
-
 # A fix has already been proposed upstream, but not yet accepted
 # https://github.com/OpenShot/libopenshot/pull/290
 Patch1:         %{name}-py-install-path.patch
