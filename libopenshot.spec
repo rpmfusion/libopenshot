@@ -4,7 +4,7 @@
 
 Name:           libopenshot
 Version:        0.2.3
-Release:        4.%{gitdate}git%{shortrev}%{?dist}
+Release:        5.%{gitdate}git%{shortrev}%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -123,6 +123,9 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 
 
 %changelog
+* Tue Feb 04 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.3-5.20190912gitc685571
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Mon Sep 16 2019 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.3-4
 - Update to git HEAD for compatibility with OpenShot update
 - Remove CMAKE_SKIP_RPATH per current packaging guidelines
