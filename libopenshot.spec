@@ -1,19 +1,11 @@
-%global gitrev c685571e6388ad5cc6c40661fd51bd15b436ccac
-%global shortrev %(c=%{gitrev}; echo ${c:0:7})
-%global gitdate 20190912
-
 Name:           libopenshot
-Version:        0.2.3
-Release:        5.%{gitdate}git%{shortrev}%{?dist}
+Version:        0.2.4
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
-Source0:        https://github.com/OpenShot/%{name}/archive/%{gitrev}.tar.gz#/%{name}-%{shortrev}.tar.gz
-
-# A fix has already been proposed upstream, but not yet accepted
-# https://github.com/OpenShot/libopenshot/pull/290
-Patch1:         %{name}-py-install-path.patch
+Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  gcc-c++
 %{?el7:BuildRequires: epel-rpm-macros}
@@ -26,14 +18,7 @@ BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
 BuildRequires:  jsoncpp-devel
-
-# Dependency on libopenshot-audio 0.1.8 is insufficient, this libopenshot
-# code can only be built and run with a libopenshot-audio release containing
-# the new JUCE 5 APIs, which were introduced in the specific package releases
-# indicated. This restriction will be eliminated with the next official
-# releases of libopenshot and libopenshot-audio.
-BuildRequires:  libopenshot-audio-devel >= 0:0.1.8-2
-Requires:       libopenshot-audio%{?isa} >= 0:0.1.8-2
+BuildRequires:  libopenshot-audio-devel >= 0:0.1.9
 
 # EL7 has other packages providing libzmq.so.5
 %{?el7:Requires: zeromq%{?isa} >= 0:4.1.4}
@@ -79,19 +64,12 @@ applications that use %{name}.
 
 
 %prep
-%autosetup -p1 -n %{name}-%{gitrev}
-
-sed -e 's|-g -ggdb|-g|g' -i src/CMakeLists.txt tests/CMakeLists.txt
+%autosetup -p1
 
 %build
 
-# Package includes an outdated FindPythonLibs.cmake module
-# Reported upstream: https://github.com/OpenShot/libopenshot/pull/331
-rm cmake/Modules/FindPythonLibs.cmake
-
 export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
-%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release \
- -DUSE_SYSTEM_JSONCPP:BOOL=ON .
+%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
 %make_build
 
 # Disabling unit tests, which fail on every arch except i686 / x86_64.
@@ -123,6 +101,10 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 
 
 %changelog
+* Thu Feb 13 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.4-1
+- New upstream release
+- Drop upstreamed patches / fixes, relax libopenshot-audio dependency
+
 * Tue Feb 04 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.3-5.20190912gitc685571
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
