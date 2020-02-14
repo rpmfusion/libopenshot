@@ -1,19 +1,16 @@
-%global gitrev c685571e6388ad5cc6c40661fd51bd15b436ccac
-%global shortrev %(c=%{gitrev}; echo ${c:0:7})
-%global gitdate 20190912
+# Disable Ruby package on ppcle64, as the build keeps crashing
+%ifnarch ppc64le
+%global with_ruby 1
+%endif
 
 Name:           libopenshot
-Version:        0.2.3
-Release:        4.%{gitdate}git%{shortrev}%{?dist}
+Version:        0.2.4
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
-Source0:        https://github.com/OpenShot/%{name}/archive/%{gitrev}.tar.gz#/%{name}-%{shortrev}.tar.gz
-
-# A fix has already been proposed upstream, but not yet accepted
-# https://github.com/OpenShot/libopenshot/pull/290
-Patch1:         %{name}-py-install-path.patch
+Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  gcc-c++
 %{?el7:BuildRequires: epel-rpm-macros}
@@ -26,14 +23,7 @@ BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
 BuildRequires:  jsoncpp-devel
-
-# Dependency on libopenshot-audio 0.1.8 is insufficient, this libopenshot
-# code can only be built and run with a libopenshot-audio release containing
-# the new JUCE 5 APIs, which were introduced in the specific package releases
-# indicated. This restriction will be eliminated with the next official
-# releases of libopenshot and libopenshot-audio.
-BuildRequires:  libopenshot-audio-devel >= 0:0.1.8-2
-Requires:       libopenshot-audio%{?isa} >= 0:0.1.8-2
+BuildRequires:  libopenshot-audio-devel >= 0:0.1.9
 
 # EL7 has other packages providing libzmq.so.5
 %{?el7:Requires: zeromq%{?isa} >= 0:4.1.4}
@@ -61,13 +51,14 @@ BuildRequires:  python%{python3_pkgversion}-libs
 BuildRequires:  python%{python3_pkgversion}-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Obsoletes:      python-%{name} < 0.1.1-2
-Provides:       python-%{name}
+Provides:       python-%{name} = %{version}-%{release}
 
 %description -n python%{python3_pkgversion}-%{name}
 The python-%{name} package contains python bindings for 
 applications that use %{name}.
 
 
+%if %{?with_ruby}0
 %package -n     ruby-%{name}
 Summary:        Ruby bindings for %{name}
 BuildRequires:  ruby-devel
@@ -77,21 +68,19 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The ruby-%{name} package contains ruby bindings for
 applications that use %{name}.
 
+%endif
 
 %prep
-%autosetup -p1 -n %{name}-%{gitrev}
-
-sed -e 's|-g -ggdb|-g|g' -i src/CMakeLists.txt tests/CMakeLists.txt
+%autosetup -p1
 
 %build
 
-# Package includes an outdated FindPythonLibs.cmake module
-# Reported upstream: https://github.com/OpenShot/libopenshot/pull/331
-rm cmake/Modules/FindPythonLibs.cmake
 
 export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
-%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release \
- -DUSE_SYSTEM_JSONCPP:BOOL=ON .
+%cmake3 -Wno-dev \
+        -DCMAKE_BUILD_TYPE:STRING=Release \
+        %{!?with_ruby:-DENABLE_RUBY=0} \
+        .
 %make_build
 
 # Disabling unit tests, which fail on every arch except i686 / x86_64.
@@ -118,11 +107,23 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
 
+
+%if %{?with_ruby}0
+
 %files -n ruby-libopenshot
 %{ruby_vendorarchdir}/*
 
+%endif
 
 %changelog
+* Thu Feb 13 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.4-1
+- New upstream release
+- Drop upstreamed patches / fixes, relax libopenshot-audio dependency
+- Disable building Ruby bindings on ppc64le due to compilation failures
+
+* Tue Feb 04 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.3-5.20190912gitc685571
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Mon Sep 16 2019 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.3-4
 - Update to git HEAD for compatibility with OpenShot update
 - Remove CMAKE_SKIP_RPATH per current packaging guidelines
