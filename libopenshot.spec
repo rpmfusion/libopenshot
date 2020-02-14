@@ -46,7 +46,7 @@ developing applications that use %{name}.
 
 %package -n     python%{python3_pkgversion}-%{name}
 Summary:        Python bindings for %{name}
-BuildRequires:  swig
+BuildRequires:  swig >= 3.0
 BuildRequires:  python%{python3_pkgversion}-libs
 BuildRequires:  python%{python3_pkgversion}-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
@@ -59,6 +59,7 @@ applications that use %{name}.
 
 
 %if %{?with_ruby}0
+
 %package -n     ruby-%{name}
 Summary:        Ruby bindings for %{name}
 BuildRequires:  ruby-devel
