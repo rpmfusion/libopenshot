@@ -1,3 +1,8 @@
+# Disable Ruby package on ppcle64, as the build keeps crashing
+%ifnarch ppc64le
+%global with_ruby 1
+%endif
+
 Name:           libopenshot
 Version:        0.2.4
 Release:        1%{?dist}
@@ -46,13 +51,14 @@ BuildRequires:  python%{python3_pkgversion}-libs
 BuildRequires:  python%{python3_pkgversion}-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Obsoletes:      python-%{name} < 0.1.1-2
-Provides:       python-%{name}
+Provides:       python-%{name} = %{version}-%{release}
 
 %description -n python%{python3_pkgversion}-%{name}
 The python-%{name} package contains python bindings for 
 applications that use %{name}.
 
 
+%if %{?with_ruby}0
 %package -n     ruby-%{name}
 Summary:        Ruby bindings for %{name}
 BuildRequires:  ruby-devel
@@ -62,14 +68,19 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The ruby-%{name} package contains ruby bindings for
 applications that use %{name}.
 
+%endif
 
 %prep
 %autosetup -p1
 
 %build
 
+
 export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
-%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
+%cmake3 -Wno-dev \
+        -DCMAKE_BUILD_TYPE:STRING=Release \
+        %{!?with_ruby:-DENABLE_RUBY=0} \
+        .
 %make_build
 
 # Disabling unit tests, which fail on every arch except i686 / x86_64.
@@ -96,14 +107,19 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
 
+
+%if %{?with_ruby}0
+
 %files -n ruby-libopenshot
 %{ruby_vendorarchdir}/*
 
+%endif
 
 %changelog
 * Thu Feb 13 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.4-1
 - New upstream release
 - Drop upstreamed patches / fixes, relax libopenshot-audio dependency
+- Disable building Ruby bindings on ppc64le due to compilation failures
 
 * Tue Feb 04 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.3-5.20190912gitc685571
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
