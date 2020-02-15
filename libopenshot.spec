@@ -76,7 +76,6 @@ applications that use %{name}.
 
 %build
 
-
 export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %cmake3 -Wno-dev \
         -DCMAKE_BUILD_TYPE:STRING=Release \
@@ -84,17 +83,15 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
         .
 %make_build
 
-# Disabling unit tests, which fail on every arch except i686 / x86_64.
-# Reported upstream: https://github.com/OpenShot/libopenshot/issues/332
-#%%check
-#make os_test
+%check
+make os_test
 
 %install
 %make_install
 
-
-%ldconfig_scriptlets
-
+%if 0%{?rhel} && 0%{?rhel} <= 7
+  %ldconfig_scriptlets
+%endif
 
 %files
 %doc AUTHORS README.md
