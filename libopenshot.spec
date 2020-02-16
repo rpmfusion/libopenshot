@@ -1,8 +1,3 @@
-# Disable Ruby package on ppcle64, as the build keeps crashing
-%ifnarch ppc64le
-%global with_ruby 1
-%endif
-
 Name:           libopenshot
 Version:        0.2.4
 Release:        1%{?dist}
@@ -11,6 +6,9 @@ Summary:        Library for creating and editing videos
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
+
+# libopenshot is completely broken on ppc64le, see rfbz #5528
+ExcludeArch:    ppc64le
 
 BuildRequires:  gcc-c++
 %{?el7:BuildRequires: epel-rpm-macros}
@@ -58,8 +56,6 @@ The python-%{name} package contains python bindings for
 applications that use %{name}.
 
 
-%if %{?with_ruby}0
-
 %package -n     ruby-%{name}
 Summary:        Ruby bindings for %{name}
 BuildRequires:  ruby-devel
@@ -69,7 +65,6 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The ruby-%{name} package contains ruby bindings for
 applications that use %{name}.
 
-%endif
 
 %prep
 %autosetup -p1
@@ -77,10 +72,7 @@ applications that use %{name}.
 %build
 
 export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
-%cmake3 -Wno-dev \
-        -DCMAKE_BUILD_TYPE:STRING=Release \
-        %{!?with_ruby:-DENABLE_RUBY=0} \
-        .
+%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
 %make_build
 
 %check
@@ -105,13 +97,8 @@ make os_test
 %files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
 
-
-%if %{?with_ruby}0
-
 %files -n ruby-libopenshot
 %{ruby_vendorarchdir}/*
-
-%endif
 
 %changelog
 * Thu Feb 13 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.4-1
