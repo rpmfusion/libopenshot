@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.2.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -101,6 +101,9 @@ make os_test
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Sat Feb 22 2020 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 0.2.4-2
+- Rebuild for ffmpeg-4.3 git
+
 * Thu Feb 13 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.4-1
 - New upstream release
 - Drop upstreamed patches / fixes, relax libopenshot-audio dependency
