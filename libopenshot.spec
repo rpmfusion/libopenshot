@@ -1,16 +1,14 @@
-# Disable Ruby package on ppcle64, as the build keeps crashing
-%ifnarch ppc64le
-%global with_ruby 1
-%endif
-
 Name:           libopenshot
-Version:        0.2.4
+Version:        0.2.5
 Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
+
+# libopenshot is completely broken on ppc64le, see rfbz #5528
+ExcludeArch:    ppc64le
 
 BuildRequires:  gcc-c++
 %{?el7:BuildRequires: epel-rpm-macros}
@@ -23,7 +21,7 @@ BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
 BuildRequires:  jsoncpp-devel
-BuildRequires:  libopenshot-audio-devel >= 0:0.1.9
+BuildRequires:  libopenshot-audio-devel
 
 # EL7 has other packages providing libzmq.so.5
 %{?el7:Requires: zeromq%{?isa} >= 0:4.1.4}
@@ -58,8 +56,6 @@ The python-%{name} package contains python bindings for
 applications that use %{name}.
 
 
-%if %{?with_ruby}0
-
 %package -n     ruby-%{name}
 Summary:        Ruby bindings for %{name}
 BuildRequires:  ruby-devel
@@ -69,32 +65,25 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 The ruby-%{name} package contains ruby bindings for
 applications that use %{name}.
 
-%endif
 
 %prep
 %autosetup -p1
 
 %build
 
-
 export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
-%cmake3 -Wno-dev \
-        -DCMAKE_BUILD_TYPE:STRING=Release \
-        %{!?with_ruby:-DENABLE_RUBY=0} \
-        .
+%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
 %make_build
 
-# Disabling unit tests, which fail on every arch except i686 / x86_64.
-# Reported upstream: https://github.com/OpenShot/libopenshot/issues/332
-#%%check
-#make os_test
+%check
+make os_test
 
 %install
 %make_install
 
-
-%ldconfig_scriptlets
-
+%if 0%{?rhel} && 0%{?rhel} <= 7
+  %ldconfig_scriptlets
+%endif
 
 %files
 %doc AUTHORS README.md
@@ -108,15 +97,16 @@ export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
 
-
-%if %{?with_ruby}0
-
 %files -n ruby-libopenshot
 %{ruby_vendorarchdir}/*
 
-%endif
-
 %changelog
+* Sat Mar 07 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.5-1
+- New upstream release
+
+* Sat Feb 22 2020 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 0.2.4-2
+- Rebuild for ffmpeg-4.3 git
+
 * Thu Feb 13 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.4-1
 - New upstream release
 - Drop upstreamed patches / fixes, relax libopenshot-audio dependency
