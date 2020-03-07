@@ -1,6 +1,6 @@
 Name:           libopenshot
-Version:        0.2.4
-Release:        2%{?dist}
+Version:        0.2.5
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -21,7 +21,7 @@ BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
 BuildRequires:  jsoncpp-devel
-BuildRequires:  libopenshot-audio-devel >= 0:0.1.9
+BuildRequires:  libopenshot-audio-devel
 
 # EL7 has other packages providing libzmq.so.5
 %{?el7:Requires: zeromq%{?isa} >= 0:4.1.4}
@@ -101,6 +101,9 @@ make os_test
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Sat Mar 07 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.5-1
+- New upstream release
+
 * Sat Feb 22 2020 RPM Fusion Release Engineering <leigh123linux@googlemail.com> - 0.2.4-2
 - Rebuild for ffmpeg-4.3 git
 
