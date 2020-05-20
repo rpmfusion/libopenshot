@@ -1,6 +1,6 @@
 Name:           libopenshot
 Version:        0.2.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -101,6 +101,9 @@ make os_test
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Wed May 20 2020 Sérgio Basto <sergio@serjux.com> - 0.2.5-2
+- Rebuild for ImageMagick on el7
+
 * Sat Mar 07 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.5-1
 - New upstream release
 
