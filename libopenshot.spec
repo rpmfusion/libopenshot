@@ -44,7 +44,8 @@ developing applications that use %{name}.
 
 %package -n     python%{python3_pkgversion}-%{name}
 Summary:        Python bindings for %{name}
-BuildRequires:  swig >= 3.0
+%{?el7:BuildRequires: swig3}
+%{!?el7:BuildRequires: swig}
 BuildRequires:  python%{python3_pkgversion}-libs
 BuildRequires:  python%{python3_pkgversion}-devel
 Requires:       %{name}%{?_isa} = %{version}-%{release}
@@ -103,6 +104,7 @@ make os_test
 %changelog
 * Wed May 20 2020 Sérgio Basto <sergio@serjux.com> - 0.2.5-2
 - Rebuild for ImageMagick on el7
+- Fix build on el7
 
 * Sat Mar 07 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.5-1
 - New upstream release
