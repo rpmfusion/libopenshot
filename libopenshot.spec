@@ -1,3 +1,5 @@
+%define _legacy_common_support 1
+
 Name:           libopenshot
 Version:        0.2.5
 Release:        3%{?dist}
