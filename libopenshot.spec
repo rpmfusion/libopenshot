@@ -1,13 +1,14 @@
-%define _legacy_common_support 1
+%global github_url https://github.com/OpenShot/libopenshot
 
 Name:           libopenshot
 Version:        0.2.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
-Source0:        https://github.com/OpenShot/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
+Source0:        %{github_url}/archive/v%{version}/%{name}-%{version}.tar.gz
+Patch0:         %{github_url}/commit/13290364e7bea54164ab83d973951f2898ad9e23.patch#/gcc10_fix.patch
 
 # libopenshot is completely broken on ppc64le, see rfbz #5528
 ExcludeArch:    ppc64le
@@ -103,6 +104,9 @@ make os_test
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Tue Jun 02 2020 Leigh Scott <leigh123linux@gmail.com> - 0.2.5-4
+- Fix gcc-10 -fno-common issue
+
 * Sat May 30 2020 Leigh Scott <leigh123linux@gmail.com> - 0.2.5-3
 - Rebuild for python-3.9
 
