@@ -2,7 +2,7 @@
 
 Name:           libopenshot
 Version:        0.2.5
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -74,15 +74,15 @@ applications that use %{name}.
 
 %build
 
-export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
+#export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
-%make_build
+%cmake_build
 
 %check
-make os_test
+%cmake_build --target os_test
 
 %install
-%make_install
+%cmake_install
 
 %if 0%{?rhel} && 0%{?rhel} <= 7
   %ldconfig_scriptlets
@@ -104,6 +104,9 @@ make os_test
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Tue Aug 04 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.5-5
+- Updates for Fedora 33 build changes
+
 * Tue Jun 02 2020 Leigh Scott <leigh123linux@gmail.com> - 0.2.5-4
 - Fix gcc-10 -fno-common issue
 
