@@ -1,5 +1,8 @@
 %global github_url https://github.com/OpenShot/libopenshot
 
+# Try opting-out of LTO, due to test failures
+%define _lto_cflags %{nil}
+
 Name:           libopenshot
 Version:        0.2.5
 Release:        6%{?dist}
