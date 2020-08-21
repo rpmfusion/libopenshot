@@ -9,6 +9,7 @@ License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        %{github_url}/archive/v%{version}/%{name}-%{version}.tar.gz
 Patch0:         %{github_url}/commit/13290364e7bea54164ab83d973951f2898ad9e23.patch#/gcc10_fix.patch
+Patch1:         %{github_url}/commit/f71051e8f1add0b893ffaa9a799625017978e7f8.patch#/test_fix.patch
 
 # libopenshot is completely broken on ppc64le, see rfbz #5528
 ExcludeArch:    ppc64le
@@ -106,6 +107,7 @@ applications that use %{name}.
 %changelog
 * Tue Aug 18 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.5-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+- Add patch from upstream to fix unit test failures
 
 * Tue Aug 04 2020 FeRD (Frank Dana) <ferdnyc@gmail.com> - 0.2.5-5
 - Updates for Fedora 33 build changes
