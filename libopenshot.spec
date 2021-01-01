@@ -5,7 +5,7 @@
 
 Name:           libopenshot
 Version:        0.2.5
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -108,6 +108,9 @@ applications that use %{name}.
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Fri Jan  1 2021 Leigh Scott <leigh123linux@gmail.com> - 0.2.5-7
+- Rebuilt for new ffmpeg snapshot
+
 * Tue Aug 18 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.5-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 - Add patch from upstream to fix unit test failures
