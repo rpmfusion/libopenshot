@@ -4,24 +4,27 @@
 %define _lto_cflags %{nil}
 
 Name:           libopenshot
-Version:        0.2.5
-Release:        10%{?dist}
+Version:        0.2.6
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
 URL:            http://www.openshot.org/
 Source0:        %{github_url}/archive/v%{version}/%{name}-%{version}.tar.gz
-Patch0:         %{github_url}/commit/13290364e7bea54164ab83d973951f2898ad9e23.patch#/gcc10_fix.patch
-Patch1:         %{github_url}/commit/f71051e8f1add0b893ffaa9a799625017978e7f8.patch#/test_fix.patch
 
 # libopenshot is completely broken on ppc64le, see rfbz #5528
 ExcludeArch:    ppc64le
 
 BuildRequires:  gcc-c++
 %{?el7:BuildRequires: epel-rpm-macros}
+%if 0%{?rhel} && 0%{?rhel} <= 7
 BuildRequires:  cmake3
+%else
+BuildRequires:  cmake
+%endif
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
+BuildRequires:  protobuf-devel
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
 BuildRequires:  unittest-cpp-devel
@@ -77,16 +80,14 @@ applications that use %{name}.
 %autosetup -p1
 
 %build
-
-#export CXXFLAGS="%{optflags} -Wl,--as-needed %{__global_ldflags}"
 %cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
-%cmake_build
+%cmake3_build
 
 %check
-%cmake_build --target os_test || :
+%cmake3_build --target test || :
 
 %install
-%cmake_install
+%cmake3_install
 
 %if 0%{?rhel} && 0%{?rhel} <= 7
   %ldconfig_scriptlets
@@ -95,11 +96,13 @@ applications that use %{name}.
 %files
 %doc AUTHORS README.md
 %license COPYING
-%{_libdir}/*.so.*
+%{_libdir}/%{name}.so.*
+%{_libdir}/%{name}_protobuf.so.*
 
 %files devel
 %{_includedir}/%{name}/
-%{_libdir}/*.so
+%{_libdir}/%{name}.so
+%{_libdir}/%{name}_protobuf.so
 
 %files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
@@ -108,6 +111,9 @@ applications that use %{name}.
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Thu Aug 26 2021 Leigh Scott <leigh123linux@gmail.com> - 0.2.6-1
+- New upstream release
+
 * Tue Aug 03 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.2.5-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
