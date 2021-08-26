@@ -22,6 +22,7 @@ BuildRequires:  cmake3
 %else
 BuildRequires:  cmake
 %endif
+BuildRequires:  alsa-lib-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
 BuildRequires:  protobuf-devel
