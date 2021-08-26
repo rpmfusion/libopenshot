@@ -25,6 +25,7 @@ BuildRequires:  cmake
 BuildRequires:  alsa-lib-devel
 BuildRequires:  ImageMagick-c++-devel
 BuildRequires:  ffmpeg-devel
+BuildRequires:  opencv-devel
 BuildRequires:  protobuf-devel
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
