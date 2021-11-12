@@ -5,7 +5,7 @@
 
 Name:           libopenshot
 Version:        0.2.7
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -113,6 +113,9 @@ applications that use %{name}.
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Fri Nov 12 2021 Nicolas Chauvet <kwizart@gmail.com> - 0.2.7-4
+- rebuilt
+
 * Tue Nov 09 2021 Leigh Scott <leigh123linux@gmail.com> - 0.2.7-3
 - Rebuilt for new ffmpeg snapshot
 
