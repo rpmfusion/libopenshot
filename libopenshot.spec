@@ -24,7 +24,11 @@ BuildRequires:  cmake
 %endif
 BuildRequires:  alsa-lib-devel
 BuildRequires:  ImageMagick-c++-devel
+%if 0%{?fedora} && 0%{?fedora} > 35
+BuildRequires:  compat-ffmpeg4-devel
+%else
 BuildRequires:  ffmpeg-devel
+%endif
 BuildRequires:  opencv-devel
 BuildRequires:  protobuf-devel
 BuildRequires:  qt5-qttools-devel
@@ -82,6 +86,9 @@ applications that use %{name}.
 %autosetup -p1
 
 %build
+%if 0%{?fedora} && 0%{?fedora} > 35
+export PKG_CONFIG_PATH="%{_libdir}/compat-ffmpeg4/pkgconfig"
+%endif
 %cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
 %cmake3_build
 
