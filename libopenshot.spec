@@ -5,7 +5,7 @@
 
 Name:           libopenshot
 Version:        0.2.7
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -89,7 +89,7 @@ applications that use %{name}.
 %if 0%{?fedora} && 0%{?fedora} > 35
 export PKG_CONFIG_PATH="%{_libdir}/compat-ffmpeg4/pkgconfig"
 %endif
-%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release .
+%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release
 %cmake3_build
 
 %check
@@ -120,6 +120,10 @@ export PKG_CONFIG_PATH="%{_libdir}/compat-ffmpeg4/pkgconfig"
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Thu Jun 23 2022 Sérgio Basto <sergio@serjux.com> - 0.2.7-6
+- Rebuilt for opencv 4.6.0
+- Fix cmake build
+
 * Sun Feb 06 2022 Leigh Scott <leigh123linux@gmail.com> - 0.2.7-5
 - Rebuilt for ffmpeg
 
