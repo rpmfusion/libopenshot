@@ -5,7 +5,7 @@
 
 Name:           libopenshot
 Version:        0.2.7
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+
@@ -120,6 +120,9 @@ export PKG_CONFIG_PATH="%{_libdir}/compat-ffmpeg4/pkgconfig"
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Sat Jun 25 2022 Robert-André Mauchin <zebob.m@gmail.com> - 0.2.7-7
+- Rebuilt for Python 3.11
+
 * Thu Jun 23 2022 Sérgio Basto <sergio@serjux.com> - 0.2.7-6
 - Rebuilt for opencv 4.6.0
 - Fix cmake build
