@@ -25,6 +25,7 @@ BuildRequires:  opencv-devel
 BuildRequires:  protobuf-devel
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtmultimedia-devel
+BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  unittest-cpp-devel
 BuildRequires:  cppzmq-devel
 BuildRequires:  zeromq-devel
