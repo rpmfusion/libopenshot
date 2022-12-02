@@ -4,11 +4,11 @@
 %define _lto_cflags %{nil}
 
 Name:           libopenshot
-Version:        0.2.7
-Release:        8%{?dist}
+Version:        0.3.0
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
-License:        LGPLv3+
+License:        LGPLv3+ and BSD and MIT and CC0 and CC-BY
 URL:            http://www.openshot.org/
 Source0:        %{github_url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
@@ -16,19 +16,11 @@ Source0:        %{github_url}/archive/v%{version}/%{name}-%{version}.tar.gz
 ExcludeArch:    ppc64le
 
 BuildRequires:  gcc-c++
-%{?el7:BuildRequires: epel-rpm-macros}
-%if 0%{?rhel} && 0%{?rhel} <= 7
-BuildRequires:  cmake3
-%else
 BuildRequires:  cmake
-%endif
 BuildRequires:  alsa-lib-devel
+BuildRequires:  babl-devel
 BuildRequires:  ImageMagick-c++-devel
-%if 0%{?fedora} && 0%{?fedora} > 35
-BuildRequires:  compat-ffmpeg4-devel
-%else
 BuildRequires:  ffmpeg-devel
-%endif
 BuildRequires:  opencv-devel
 BuildRequires:  protobuf-devel
 BuildRequires:  qt5-qttools-devel
@@ -39,8 +31,6 @@ BuildRequires:  zeromq-devel
 BuildRequires:  jsoncpp-devel
 BuildRequires:  libopenshot-audio-devel
 
-# EL7 has other packages providing libzmq.so.5
-%{?el7:Requires: zeromq%{?isa} >= 0:4.1.4}
 
 %description
 OpenShot Library (libopenshot) is an open-source project
@@ -86,32 +76,23 @@ applications that use %{name}.
 %autosetup -p1
 
 %build
-%if 0%{?fedora} && 0%{?fedora} > 35
-export PKG_CONFIG_PATH="%{_libdir}/compat-ffmpeg4/pkgconfig"
-%endif
-%cmake3 -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release
-%cmake3_build
+%cmake -Wno-dev -DCMAKE_BUILD_TYPE:STRING=Release
+%cmake_build
 
 %check
-%cmake3_build --target test || :
+%cmake_build --target test || :
 
 %install
-%cmake3_install
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-  %ldconfig_scriptlets
-%endif
+%cmake_install
 
 %files
 %doc AUTHORS README.md
-%license COPYING
+%license LICENSES/*
 %{_libdir}/%{name}.so.*
-%{_libdir}/%{name}_protobuf.so.*
 
 %files devel
 %{_includedir}/%{name}/
 %{_libdir}/%{name}.so
-%{_libdir}/%{name}_protobuf.so
 
 %files -n python%{python3_pkgversion}-libopenshot
 %{python3_sitearch}/*
@@ -120,6 +101,9 @@ export PKG_CONFIG_PATH="%{_libdir}/compat-ffmpeg4/pkgconfig"
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Fri Dec 02 2022 Leigh Scott <leigh123linux@gmail.com> - 0.3.0-1
+- New upstream release
+
 * Sun Aug 07 2022 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 0.2.7-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild and ffmpeg
   5.1
