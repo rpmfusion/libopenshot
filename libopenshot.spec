@@ -4,8 +4,8 @@
 %define _lto_cflags %{nil}
 
 Name:           libopenshot
-Version:        0.3.0
-Release:        4%{?dist}
+Version:        0.3.1
+Release:        1%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+ and BSD and MIT and CC0 and CC-BY
@@ -102,6 +102,9 @@ applications that use %{name}.
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Fri Apr 07 2023 Leigh Scott <leigh123linux@gmail.com> - 0.3.1-1
+- New upstream release
+
 * Wed Mar 01 2023 Leigh Scott <leigh123linux@gmail.com> - 0.3.0-4
 - Rebuild for new ffmpeg
 
