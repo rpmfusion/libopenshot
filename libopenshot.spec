@@ -5,7 +5,7 @@
 
 Name:           libopenshot
 Version:        0.3.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Library for creating and editing videos
 
 License:        LGPLv3+ and BSD and MIT and CC0 and CC-BY
@@ -102,6 +102,9 @@ applications that use %{name}.
 %{ruby_vendorarchdir}/*
 
 %changelog
+* Sat Jul 08 2023 Leigh Scott <leigh123linux@gmail.com> - 0.3.2-2
+- Rebuilt for Python 3.12
+
 * Sat Apr 22 2023 Leigh Scott <leigh123linux@gmail.com> - 0.3.2-1
 - New upstream release
 
